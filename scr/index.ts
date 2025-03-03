@@ -1,104 +1,82 @@
 class TreeNode {
-    
     value: number;
     left: TreeNode | null;
     right: TreeNode | null;
-    
+
     constructor(value: number) {
         this.value = value;
         this.left = null;
         this.right = null;
+        console.log(`${value} Добавлен!`);
     }
 }
 
 class BinarySearchTree {
-
     private root: TreeNode | null;
 
     constructor() {
         this.root = null;
     }
 
-    add(value: number) : void {
+    add(value: number): void {
         if (this.root === null) {
             this.root = new TreeNode(value);
+        } else if (this.search(value)) {
+            console.warn(`Значение ${value} уже в дереве, пропуск...`);
         } else {
-            this.addRecursion(this.root, value)
+            this.addRecursion(this.root, value);
         }
     }
 
-    private addRecursion (node: TreeNode, value: number) : TreeNode {
+    private addRecursion(node: TreeNode, value: number): void {
         if (value < node.value) {
             if (node.left === null) {
                 node.left = new TreeNode(value);
-            } 
-            
-            else {
-                this.addRecursion(node.left, value)
+            } else {
+                this.addRecursion(node.left, value);
             }
-        }
-
-        else if (value > node.value) {
-            if (node.right ===  null) {
+        } else if (value > node.value) {
+            if (node.right === null) {
                 node.right = new TreeNode(value);
-            }
-
-            else {
-                this.addRecursion(node.right, value)
+            } else {
+                this.addRecursion(node.right, value);
             }
         }
-
-        return node;
     }
 
-    search(value: number) : boolean {
+    search(value: number): boolean {
         return this.searchRecursion(this.root, value);
     }
 
     private searchRecursion(node: TreeNode | null, value: number): boolean {
-        if (node === null) {
-            return false;
-        } if (value === node.value) {
-            return true
-        }
-        return value < node.value ? this.searchRecursion(node.left, value) : this.searchRecursion(node.right, value);
+        if (node === null) return false;
+        if (value === node.value) return true;
+        return value < node.value
+            ? this.searchRecursion(node.left, value)
+            : this.searchRecursion(node.right, value);
     }
 
-    printTree() : void {
-        this.printTreeRecursion(this.root, "", true);
+    printTree(): void {
+        this.printTreeRecursively(this.root, "", true);
     }
 
-    private printTreeRecursion(node: TreeNode | null, indent: string, last: boolean): void {
+    private printTreeRecursively(node: TreeNode | null, indent: string, last: boolean): void {
         if (node !== null) {
             console.log(indent + (last ? "R---- " : "L---- ") + node.value);
             indent += last ? "     " : "|    ";
-            this.printTreeRecursion(node.left, indent, false);
-            this.printTreeRecursion(node.right, indent, true);
+            this.printTreeRecursively(node.left, indent, false);
+            this.printTreeRecursively(node.right, indent, true);
         }
     }
 }
 
+
 const bst = new BinarySearchTree();
-bst.add(10);
-bst.add(5);
-bst.add(15);
-bst.add(3);
-bst.add(7);
-bst.add(12);
-bst.add(18);
-bst.add(1);
-bst.add(2);
-bst.add(4);
-bst.add(6);
-bst.add(8);
-bst.add(9);
-bst.add(11);
-bst.add(13);
-bst.add(14);
-bst.add(16);
-bst.add(17);
-bst.add(19);
-bst.add(20);
+const valuesToAdd = [10, 15, 15, 3, 7, 12, 18, 1, 2, 4, 6, 8, 9, 11, 13, 14, 16, 17, 19, 20];
+
+for (const value of valuesToAdd) {
+    bst.add(value);
+}
 
 console.log("Бинарное дерево поиска:");
 bst.printTree();
