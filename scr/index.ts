@@ -71,8 +71,8 @@ class BinarySearchTree {
 }
 
 
-const bst = new BinarySearchTree();
-const valuesToAdd = [10, 15, 15, 3, 7, 12, 18, 1, 2, 4, 6, 8, 9, 11, 13, 14, 16, 17, 19, 20];
+const bst: BinarySearchTree = new BinarySearchTree();
+const valuesToAdd: number[] = [10, 15, 15, 3, 7, 12, 18, 1, 2, 4, 6, 8, 9, 11, 13, 14, 16, 17, 19, 20];
 
 for (const value of valuesToAdd) {
     bst.add(value);
