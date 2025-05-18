@@ -56,6 +56,42 @@ class BinarySearchTree {
             : this.searchRecursion(node.right, value);
     }
 
+    remove(value: number): void {
+        if (this.search(value)) {
+            this.root = this.removeRecursion(this.root, value);
+            console.log(`${value} Удален!`);
+        } else {
+            console.warn(`Значение ${value} не найдено в дереве.`);
+        }
+    }
+
+    private removeRecursion(node: TreeNode | null, value: number): TreeNode | null {
+        if (node === null) return null;
+
+        if (value < node.value) {
+            node.left = this.removeRecursion(node.left, value);
+        } else if (value > node.value) {
+            node.right = this.removeRecursion(node.right, value);
+        } else {
+            if (node.left === null) {
+                return node.right;
+            } else if (node.right === null) {
+                return node.left;
+            }
+            const minLargerNode = this.findMin(node.right);
+            node.value = minLargerNode.value;
+            node.right = this.removeRecursion(node.right, minLargerNode.value);
+        }
+        return node;
+    }
+
+    private findMin(node: TreeNode): TreeNode {
+        while (node.left !== null) {
+            node = node.left;
+        }
+        return node;
+    }
+
     printTree(): void {
         this.printTreeRecursively(this.root, "", true);
     }
@@ -70,7 +106,6 @@ class BinarySearchTree {
     }
 }
 
-
 const bst: BinarySearchTree = new BinarySearchTree();
 const valuesToAdd: number[] = [10, 15, 15, 3, 7, 12, 18, 1, 2, 4, 6, 8, 9, 11, 13, 14, 16, 17, 19, 20];
 
@@ -79,4 +114,11 @@ for (const value of valuesToAdd) {
 }
 
 console.log("Бинарное дерево поиска:");
+bst.printTree();
+
+
+bst.remove(15);
+bst.remove(12)
+bst.remove(100); 
+console.log("Дерево после удаления:");
 bst.printTree();
